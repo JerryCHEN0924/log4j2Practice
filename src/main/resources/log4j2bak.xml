@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="debug" monitorInterval="30">
+
+	<!-- 共用參數定義 -->
+	<Properties>
+		<!-- log格式 -->
+		<Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t] (%F:%L) - %m%n</Property>
+		<!-- log位置 -->
+        <Property name="APP_LOG_ROOT">C:\Jerry</Property>
+		<!-- log檔名 -->
+        <Property name="LOG_FILE">log功能練習</Property>
+	</Properties>
+
+	<Appenders>
+	
+		<!-- console log -->
+		<Console name="console-log">
+			<PatternLayout pattern="${LOG_PATTERN}"/>
+		</Console>
+		
+		<!-- 輸出檔案output file -->
+		<RollingFile name="jerry-log" 
+					 fileName="${APP_LOG_ROOT}/${LOG_FILE}.log" 
+					 filePattern="${APP_LOG_ROOT}/${LOG_FILE}-%d{yyyy-MM-dd}.log.gz">
+					 
+			<PatternLayout pattern="${LOG_PATTERN}"/>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true"/>
+			</Policies>
+			<DefaultRolloverStrategy max="30"/>	
+		</RollingFile>
+
+	</Appenders>
+	
+	<Loggers>
+		<Logger name="com.hitrust.fedi.adm.fediadm" additivity="false">
+			<AppenderRef ref="jerry-log"/>
+			<AppenderRef ref="console-log"/>			
+		</Logger>
+	
+		<!-- setting hibernate SQL -->
+		<Logger name="org.hibernate.SQL" level="debug">
+			<AppenderRef ref="jerry-log"/>
+			<AppenderRef ref="console-log"/>
+		</Logger>
+		
+		<Root level="info">
+			<AppenderRef ref="jerry-log"/>
+			<AppenderRef ref="console-log"/>
+		</Root>
+	</Loggers>
+
+</Configuration>
